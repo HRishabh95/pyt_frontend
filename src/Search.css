@@ -45,32 +45,39 @@ td {
 
 
 .post-body {
-  width: 100%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   padding: 2rem 3rem;
   background: rgba(150, 150, 150, 0.103);
   border-radius: 0.8rem;
   cursor: pointer;
-  transition: all 270ms ease;
+  /*transition: all 270ms ease;*/
 }
 
 .post-body:hover {
   transform: translateY(-2px);
-  background-color: rgba(150, 150, 150, 0.342);
+  background-color: rgba(150, 150, 150, 212);
 }
-
 .post-body h3 {
   font-size: 2rem;
   font-weight: 700;
-  color: #f1f1f1;
-  width: 90%;
+  color: #000000;
+  width: 500px;
 }
-
 .post-body p {
   font-size: 0.97rem;
-  font-weight: 500;
+  font-weight: 800;
   color: #f3c610e1;
   margin-top: 1rem;
   align-self: flex-end;
+}
+.single-docs {
+  justify-content: center;
+  /*gap: 1rem;*/
+  overflow: auto;
+  height: 300px;
+  margin-top: 2rem;
+
+  /*padding-bottom: 5rem;*/
 }

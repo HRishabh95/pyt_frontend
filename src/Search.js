@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Search.css";
+import PostShort from "./components/PostShort";
 
 class Search extends Component {
   state = {
@@ -45,22 +46,10 @@ class Search extends Component {
         <button onClick={this.handleSearch}>Search</button>
         <h1>Results for the Query</h1>
         {this.state.docs ? (
-          <div id="meals-container">
+          <div id="results-container">
             {this.state.docs.map((docs, index) => (
-              <div class="single-meal" key={index}>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>{docs.docno}</td>
-                      <td>{docs.rank}</td>
-                      <td>{docs.score}</td>
-                      <td>{docs.text}</td>
-                      <td>
-                          <button onClick={() => this.linkedninHandle(docs.text)}>See Text</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="single-docs" key={index}>
+                <PostShort key={docs.docno} title={docs.text} score={docs.score} />
               </div>
             ))}
           </div>
