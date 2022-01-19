@@ -49,7 +49,9 @@ class Search extends Component {
           <div id="results-container">
             {this.state.docs.map((docs, index) => (
               <div class="single-docs" key={index}>
-                <PostShort key={docs.docno} title={docs.text} score={docs.score} />
+                <div className='score'><h3>{docs.score}</h3></div>
+                <div className='text'> <h3>{docs.text}</h3> </div>
+                {/*<PostShort key={docs.docno} title={docs.text} score={docs.score} />*/}
               </div>
             ))}
           </div>

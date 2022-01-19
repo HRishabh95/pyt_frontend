@@ -72,10 +72,24 @@ td {
   margin-top: 1rem;
   align-self: flex-end;
 }
+
+.score {
+  float: left;
+  width: 33.33%;
+}
+
+.text {
+  float: right;
+  width: 33.33%;
+  color: #f3c610e1;
+  overflow: auto;
+  height: 300px;
+
+}
+
 .single-docs {
   justify-content: center;
   /*gap: 1rem;*/
-  overflow: auto;
   height: 300px;
   margin-top: 2rem;
 
