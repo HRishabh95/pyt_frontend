@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Search.css";
-import PostShort from "./components/PostShort";
+import {Link, useNavigate} from "react-router-dom";
+
 
 class Search extends Component {
   state = {
@@ -9,28 +10,16 @@ class Search extends Component {
   };
 
 
+
   handleOnChange = event => {
     this.setState({ searchValue: event.target.value });
   };
 
   handleSearch = () => {
-    this.makeApiCall(this.state.searchValue);
+    // this.makeApiCall(this.state.searchValue);
+  useNavigate("/results",{ query: this.state.searchValue})
   };
 
-  linkedninHandle = (contents) => {
-    alert(`${contents}`);
-  };
-
-  makeApiCall = searchInput => {
-    var searchUrl = `http://127.0.0.1:5000/search?query=${searchInput}`;
-    fetch(searchUrl)
-      .then(response => {
-        return response.json();
-      })
-      .then(jsonData => {
-        this.setState({ docs: jsonData });
-      });
-  };
 
   render() {
     return (
@@ -43,21 +32,10 @@ class Search extends Component {
           onChange={event => this.handleOnChange(event)}
           value={this.state.searchValue}
         />
-        <button onClick={this.handleSearch}>Search</button>
-        <h1>Results for the Query</h1>
-        {this.state.docs ? (
-          <div id="results-container">
-            {this.state.docs.map((docs, index) => (
-              <div class="single-docs" key={index}>
-                <div className='score'><h3>{docs.score}</h3></div>
-                <div className='text'> <h3>{docs.text}</h3> </div>
-                {/*<PostShort key={docs.docno} title={docs.text} score={docs.score} />*/}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Try searching for a meal</p>
-        )}
+        <Link to={`/results/${this.state.searchValue}`} key={this.state.searchValue}>
+        {this.state.searchValue}
+        </Link>
+
       </div>
     );
   }

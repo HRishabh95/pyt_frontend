@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Outlet, Link } from "react-router-dom";
+import React from "react";
 
-import {Routes, Route, Link} from "react-router-dom";
-// import './index.css';
-import reportWebVitals from './reportWebVitals';
-import Search from './Search';
-
-function App() {
+export default function App() {
   return (
-    <div className="wrapper">
-      <h1>Marine Mammals</h1>
-      <li><Link to='/search'>Search Here</Link></li>
-        <Routes>
-          <Route path='/search' element={<Search />} />
-          <Route path="/results" element={<div>Print results</div>} />
-        </Routes>
+    <div>
+        <h1>Welcome to the Pyterrier Test Search engine</h1>
+        <input
+          name="text"
+          type="text"
+          placeholder="Search"
+          // onChange={event => this.handleOnChange(event)}
+          // value={searchValue}
+        />
+      <nav
+        style={{
+          borderBottom: "solid 1px",
+          paddingBottom: "1rem"
+        }}
+      >
+        <Link to="/invoices">Invoices</Link> |{" "}
+        <Link to="/expenses">Expenses</Link>
+      </nav>
+      <Outlet />
     </div>
   );
 }
-
-
-export default App;
