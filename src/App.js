@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { Outlet, Link } from "react-router-dom";
+import {Component} from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends Component {
+
+    state = {
+        searchValue: "",
+    };
+
+
+  handleOnChange = event => {
+    this.setState({ searchValue: event.target.value });
+  };
+
+  render(){
+      return (
+        <div>
+          <h1>Welcome to the Pyterrier Test Search engine</h1>
+            <input
+              name="text"
+              type="text"
+              placeholder="Search"
+              onChange={event => this.handleOnChange(event)}
+              value={this.state.searchValue}
+            />
+          <nav
+            style={{
+              borderBottom: "solid 1px",
+              paddingBottom: "1rem"
+            }}
+          >
+            {/*<Link to="/invoices">Invoices</Link> |{" "}*/}
+            <Link style={{ display: "block", margin: "1rem 0" }}
+                  to={`/search/${this.state.searchValue}`}
+                  key={this.state.searchValue}>Search</Link>
+          </nav>
+          <Outlet />
+        </div>
+      );
+
+  }
+
 }
-
-export default App;
