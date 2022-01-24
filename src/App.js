@@ -1,11 +1,16 @@
 import { Outlet, Link } from "react-router-dom";
 import {Component} from "react";
+import React from "react";
+import {Button} from "react-native";
+
+
 
 
 export default class App extends Component {
 
     state = {
         searchValue: "",
+        checked: false
     };
 
 
@@ -24,6 +29,14 @@ export default class App extends Component {
               onChange={event => this.handleOnChange(event)}
               value={this.state.searchValue}
             />
+
+            {/*<label>*/}
+            {/*<input type="checkbox"*/}
+            {/*defaultChecked={this.state.checked}*/}
+            {/*onChange={() => this.setState({checked:!this.state.checked})}*/}
+            {/*/>*/}
+            {/*Misinformation*/}
+            {/*</label>*/}
           <nav
             style={{
               borderBottom: "solid 1px",
@@ -34,6 +47,7 @@ export default class App extends Component {
             <Link style={{ display: "block", margin: "1rem 0" }}
                   to={`/search/${this.state.searchValue}`}
                   key={this.state.searchValue}>Search</Link>
+
           </nav>
           <Outlet />
         </div>

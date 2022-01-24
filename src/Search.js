@@ -31,7 +31,7 @@ const Search = () => {
                 {docs.map((doc) => (
                     <Link style={{ display: "block", margin: "1rem 0"}}
                           to={`/search/${params.searchValue}/${doc.docno}`}
-                          state={{text: doc.text, score:doc.score}}>
+                          state={{text: doc.text, score:doc.score, term:params.searchValue}}>
                         <h3>{doc.docno}</h3>
                     </Link>
                 ))}
