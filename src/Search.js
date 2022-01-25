@@ -21,7 +21,7 @@ const Search = () => {
             });
     };
     return (
-            <div style={{ display: "flex"}}>
+            <div style={{ display: "flex",overflow: "scroll"}}>
        <nav
          style={{
            borderRight: "solid 1px",
@@ -31,7 +31,7 @@ const Search = () => {
                 {docs.map((doc) => (
                     <Link style={{ display: "block", margin: "1rem 0"}}
                           to={`/search/${params.searchValue}/${doc.docno}`}
-                          state={{text: doc.text, score:doc.score, term:params.searchValue}}>
+                          state={{text: doc.text, score:doc.score, term:params.searchValue, misinfo_score:doc.cred_score}}>
                         <h3>{doc.docno}</h3>
                     </Link>
                 ))}
