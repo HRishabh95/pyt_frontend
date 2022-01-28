@@ -10,7 +10,8 @@ export default class App extends Component {
 
     state = {
         searchValue: "",
-        checked: false,
+        checked_mis: false,
+        checked_la:false
     };
 
     constructor(props){
@@ -49,13 +50,20 @@ export default class App extends Component {
                  Advance options
              </button>
                 {this.state.open? (
-            <label className='checkbox-label'>
-            <input className='checkboxes' type="checkbox"
-            defaultChecked={this.state.checked}
-            onChange={() => this.setState({checked:!this.state.checked})}
-            />
-            Misinformation
-            </label>):null} </div>
+                    <div style={{display: "inline"}}>
+                            <label className='checkbox-label'>
+                            <input className='checkboxes' type="checkbox"  defaultChecked={this.state.checked_mis}
+                            onChange={() => this.setState({checked_mis:!this.state.checked})}
+                            />
+                            Misinformation
+                            </label>
+                            <label className='checkbox-label'>
+                            <input className='checkboxes' type="checkbox"  defaultChecked={this.state.checked_la}
+                            onChange={() => this.setState({checked_la:!this.state.checked_la})}
+                            />
+                            Linear Aggregation
+                            </label>
+                    </div>):null} </div>
           <nav
             style={{
               borderBottom: "solid 1px",
