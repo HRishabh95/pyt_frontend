@@ -33,7 +33,6 @@ export default class App extends Component {
 
 
   render(){
-
       return (
         <div>
           <h1 style={{text_align:"center"}}>Welcome to the Pyterrier Test Search engine</h1>
@@ -53,16 +52,16 @@ export default class App extends Component {
                     <div style={{display: "inline"}}>
                             <label className='checkbox-label'>
                             <input className='checkboxes' type="checkbox"  defaultChecked={this.state.checked_mis}
-                            onChange={() => this.setState({checked_mis:!this.state.checked})}
+                            onChange={() => this.setState({checked_mis:!this.state.checked_mis})}
                             />
                             Misinformation
                             </label>
-                            <label className='checkbox-label'>
+                        {this.state.checked_mis? ( <label className='checkbox-label'>
                             <input className='checkboxes' type="checkbox"  defaultChecked={this.state.checked_la}
                             onChange={() => this.setState({checked_la:!this.state.checked_la})}
                             />
                             Linear Aggregation
-                            </label>
+                            </label>):null}
                     </div>):null} </div>
           <nav
             style={{
@@ -73,7 +72,8 @@ export default class App extends Component {
             {/*<Link to="/invoices">Invoices</Link> |{" "}*/}
             <Link style={{ display: "block", margin_left: "50px 50px", text_align:"center" }}
                   to={`/search/${this.state.searchValue}`}
-                  key={this.state.searchValue}><button>Search</button></Link>
+                  key={this.state.searchValue}
+            state={{misinformation:this.state.checked_mis, agg:this.state.checked_la}}><button>Search</button></Link>
           </nav>
           <Outlet />
         </div>
