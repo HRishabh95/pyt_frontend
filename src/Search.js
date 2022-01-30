@@ -2,7 +2,8 @@ import {Outlet, NavLink, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import React from 'react';
 import axios from 'axios';
-
+import Slider from 'react-rangeslider';
+import RangeSlider from "./RangeSlider";
 
 const Loader = () => (
   <div class="divLoader">
@@ -12,12 +13,21 @@ const Loader = () => (
   </div>
 );
 
+
+
+
 const Search = () => {
     let params = useParams();
     let [docs, setdocs] = useState([]);
     let [sortType, setSortType] = useState('Topical');
     let [loading,setloading]=useState(true);
-
+    const [sliderValue, setSliderValue] = useState(0);
+    const [sliderProps, setSliderProps] = useState({
+     min: 0,
+     max: 100,
+     value: 20,
+     label: 'Weights'
+   });
     useEffect(() => {
         fetchdocs();
         // sortArray(sortType);
@@ -48,7 +58,9 @@ const Search = () => {
         setdocs(sorted);
     };
 
-
+   const handleSliderChange = e => {
+     setSliderValue(e.target.value);
+   };
     return (
             <div style={{display:'flex'}}>
                 {loading? <Loader />:null}
@@ -61,10 +73,24 @@ const Search = () => {
                <option value='Credible'>Credible</option>
            </select>
            {/*<Slider*/}
-           {/*     value={cons}*/}
+           {/*     min={0}*/}
+           {/*     max={100}*/}
+           {/*     step={10}*/}
+           {/*     value={sliderValue}*/}
            {/*     orientation="vertical"*/}
-           {/*     onChange={handleAgg}/>*/}
-            <h1>Results</h1>
+           {/*     onChange={handleSliderChange}/>*/}
+          <div>
+           <input
+                {...sliderProps}
+                type="range"
+                value={sliderValue}
+                id="Weight"
+                name='Weight'
+                onChange={handleSliderChange}
+            />
+              <label style={{display: "inline-block"}}>Weight Credible</label>
+           </div>
+           <h1>Results</h1>
                 {docs
                     .sort((a,b)=>(a[sortType] > b[sortType]) ? -1 : 1)
                     .map((doc) => (
