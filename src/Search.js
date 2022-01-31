@@ -2,17 +2,15 @@ import {Outlet, NavLink, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import React from 'react';
 import axios from 'axios';
-import Slider from 'react-rangeslider';
-import RangeSlider from "./RangeSlider";
-
-const Loader = () => (
-  <div class="divLoader">
-    <svg class="svgLoader" viewBox="0 0 100 100" width="10em" height="10em">
-      <path stroke="none" d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#51CACC" transform="rotate(179.719 50 51)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 51;360 50 51" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></path>
-    </svg>
-  </div>
-);
-
+//
+// const Loader = () => (
+//   <div class="divLoader">
+//     <svg class="svgLoader" viewBox="0 0 100 100" width="10em" height="10em">
+//       <path stroke="none" d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#51CACC" transform="rotate(179.719 50 51)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 51;360 50 51" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animateTransform></path>
+//     </svg>
+//   </div>
+// );
+//
 
 
 
@@ -24,8 +22,9 @@ const Search = () => {
     const [sliderValue, setSliderValue] = useState(0);
     const [sliderProps, setSliderProps] = useState({
      min: 0,
-     max: 100,
-     value: 20,
+     max: 1.0,
+        step:0.1,
+     value: 0,
      label: 'Weights'
    });
     useEffect(() => {
@@ -52,6 +51,7 @@ const Search = () => {
         const types= {
             Topical:'score',
             Credible:'cred_score',
+            Agg:'agg_score',
         };
         const sortProperty = types[type];
         const sorted =[...docs].sort((a,b) => b[sortProperty]-a[sortProperty]);
@@ -60,10 +60,19 @@ const Search = () => {
 
    const handleSliderChange = e => {
      setSliderValue(e.target.value);
+     var newList = docs.map((doc)=> {
+         const aggList = {
+             ...doc,
+             agg_score:(1-parseFloat(sliderValue))*parseFloat(doc.score)+parseFloat(sliderValue)*parseFloat(doc.cred_score),
+         };
+         return aggList;
+     });
+     setdocs(newList)
    };
+
     return (
             <div style={{display:'flex'}}>
-                {loading? <Loader />:null}
+                {/*{loading? <Loader />:null}*/}
        <nav
          style={{
            borderRight: "solid 1px",
@@ -71,6 +80,7 @@ const Search = () => {
            <select onChange={(e) => setSortType(e.target.value)}>
                <option value='Topical'>Topical</option>
                <option value='Credible'>Credible</option>
+               <option value="Agg">Agg</option>
            </select>
            {/*<Slider*/}
            {/*     min={0}*/}
@@ -85,7 +95,6 @@ const Search = () => {
                 type="range"
                 value={sliderValue}
                 id="Weight"
-                name='Weight'
                 onChange={handleSliderChange}
             />
               <label style={{display: "inline-block"}}>Weight Credible</label>
@@ -96,7 +105,7 @@ const Search = () => {
                     .map((doc) => (
                     <NavLink style={{ display: "block", margin: "1rem 0"}}
                           to={`/search/${params.searchValue}/${doc.docno}`}
-                          state={{text: doc.text, score:doc.score, term:params.searchValue, misinfo_score:doc.cred_score}}>
+                          state={{text: doc.text, score:doc.score, term:params.searchValue, misinfo_score:doc.cred_score, a_score:doc.agg_score}}>
                         <h3>{doc.docno}</h3>
                     </NavLink>
                 ))}
