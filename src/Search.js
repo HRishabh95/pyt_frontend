@@ -1,4 +1,4 @@
-import {Outlet, NavLink, useParams} from "react-router-dom";
+import {Outlet, NavLink, useParams, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 import React from 'react';
 import axios from 'axios';
@@ -16,6 +16,7 @@ import axios from 'axios';
 
 const Search = () => {
     let params = useParams();
+    let extra_data = useLocation();
     let [docs, setdocs] = useState([]);
     let [sortType, setSortType] = useState('Topical');
     let [loading,setloading]=useState(true);
@@ -27,13 +28,14 @@ const Search = () => {
      value: 0,
      label: 'Weights'
    });
+    let misinformation_checked=extra_data.state.misinformation
     useEffect(() => {
         fetchdocs();
         // sortArray(sortType);
     }, [params.searchValue]);
     const fetchdocs = () => {
         axios
-            .get(`http://127.0.0.1:5000/search?query=${params.searchValue}`)
+            .get(`http://127.0.0.1:5000/search?query=${params.searchValue}&mis_check=${misinformation_checked}`)
             .then((response) => {
                 setloading(false);
                 console.log(response);
@@ -45,7 +47,7 @@ const Search = () => {
     };
     useEffect(()=>{
          sortArray(sortType)
-    },[sortType])
+    },[sortType,sliderValue])
 
     const sortArray = type =>{
         const types= {
@@ -97,11 +99,11 @@ const Search = () => {
                 id="Weight"
                 onChange={handleSliderChange}
             />
-              <label style={{display: "inline-block"}}>Weight Credible</label>
+              <label style={{display: "inline-block"}}>Weight {sliderValue}</label>
            </div>
            <h1>Results</h1>
                 {docs
-                    .sort((a,b)=>(a[sortType] > b[sortType]) ? -1 : 1)
+                    // .sort((a,b)=>(a[sortType] > b[sortType]) ? -1 : 1)
                     .map((doc) => (
                     <NavLink style={{ display: "block", margin: "1rem 0"}}
                           to={`/search/${params.searchValue}/${doc.docno}`}
