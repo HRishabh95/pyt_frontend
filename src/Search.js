@@ -29,6 +29,7 @@ const Search = () => {
      label: 'Weights'
    });
     let misinformation_checked=extra_data.state.misinformation
+    let agg_checked=extra_data.state.agg
     useEffect(() => {
         fetchdocs();
         // sortArray(sortType);
@@ -72,26 +73,29 @@ const Search = () => {
      setdocs(newList)
    };
 
+
+
+
     return (
             <div style={{display:'flex'}}>
                 {/*{loading? <Loader />:null}*/}
+
        <nav
          style={{
            borderRight: "solid 1px",
            padding: "1rem"}}>
+
+
+           {misinformation_checked? (
            <select onChange={(e) => setSortType(e.target.value)}>
                <option value='Topical'>Topical</option>
                <option value='Credible'>Credible</option>
                <option value="Agg">Agg</option>
-           </select>
-           {/*<Slider*/}
-           {/*     min={0}*/}
-           {/*     max={100}*/}
-           {/*     step={10}*/}
-           {/*     value={sliderValue}*/}
-           {/*     orientation="vertical"*/}
-           {/*     onChange={handleSliderChange}/>*/}
-          <div>
+           </select>):null}
+
+
+           {agg_checked?(
+           <div>
            <input
                 {...sliderProps}
                 type="range"
@@ -100,14 +104,16 @@ const Search = () => {
                 onChange={handleSliderChange}
             />
               <label style={{display: "inline-block"}}>Weight {sliderValue}</label>
-           </div>
+           </div>):null}
+
+
            <h1>Results</h1>
                 {docs
                     // .sort((a,b)=>(a[sortType] > b[sortType]) ? -1 : 1)
                     .map((doc) => (
                     <NavLink style={{ display: "block", margin: "1rem 0"}}
                           to={`/search/${params.searchValue}/${doc.docno}`}
-                          state={{text: doc.text, score:doc.score, term:params.searchValue, misinfo_score:doc.cred_score, a_score:doc.agg_score}}>
+                          state={{text: doc.text, docid: doc.docno, score:doc.score, term:params.searchValue, misinfo_score:doc.cred_score, a_score:doc.agg_score}}>
                         <h3>{doc.docno}</h3>
                     </NavLink>
                 ))}

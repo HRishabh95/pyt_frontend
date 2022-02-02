@@ -6,7 +6,7 @@ import {Collapse} from "react-collapse/lib/Collapse";
 import './App.css';
 
 
-export default class App extends Component {
+class App extends Component {
 
     state = {
         searchValue: "",
@@ -34,7 +34,7 @@ export default class App extends Component {
 
   render(){
       return (
-        <div>
+        <div >
           <h1 style={{text_align:"center"}}>Welcome to the Pyterrier Test Search engine</h1>
             <input style={{width: "50%", margin:'auto'}}
               name="text"
@@ -44,7 +44,7 @@ export default class App extends Component {
               value={this.state.searchValue}
             />
 
-            <div className='advance_container'>
+            <div className='advance_container' style={{flexDirection:'row'}}>
              <button onClick={(e)=> this.togglePanel(e)} className='header'>
                  Advance options
              </button>
@@ -56,6 +56,7 @@ export default class App extends Component {
                             />
                             Misinformation
                             </label>
+
                         {this.state.checked_mis? ( <label className='checkbox-label'>
                             <input className='checkboxes' type="checkbox"  defaultChecked={this.state.checked_la}
                             onChange={() => this.setState({checked_la:!this.state.checked_la})}
@@ -82,3 +83,5 @@ export default class App extends Component {
   }
 
 }
+
+export default App;
