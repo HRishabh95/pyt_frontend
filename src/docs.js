@@ -2,6 +2,7 @@ import {useLocation} from "react-router-dom";
 import ReactHtmlParser from 'react-html-parser';
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import downloadjs from "downloadjs";
 
 export default function Docs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -51,8 +52,21 @@ export default function Docs() {
             });
     }
 
+    const getAnnoData = () => {
+        axios
+            .get('http://127.0.0.1:5000/getAnno')
+            .then(function(r){
+                let blob = new Blob([JSON.stringify(r.data)],{type: 'application/json'})
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download='anno_all.json'
+                link.click()
+            })
+    }
+
     return (
         <div style={{ padding: "1rem" }}>
+            <button onClick={getAnnoData}>Download Annotation</button>
       <h2>Topical Score: {data.state.score}</h2>
             {relevance? (
         <button style={{right: '10px'}} onClick={(e)=> setrelevance(!relevance)} className='Relevant'>

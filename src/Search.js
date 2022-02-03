@@ -15,13 +15,13 @@ import axios from 'axios';
 
 
 const Search = () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     let params = useParams();
     let extra_data = useLocation();
     let [docs, setdocs] = useState([]);
     let [sortType, setSortType] = useState('Topical');
-    let [loading,setloading]=useState(true);
     const [sliderValue, setSliderValue] = useState(0);
-    const [sliderProps, setSliderProps] = useState({
+    const [sliderProps] = useState({
      min: 0,
      max: 1.0,
         step:0.1,
@@ -30,15 +30,16 @@ const Search = () => {
    });
     let misinformation_checked=extra_data.state.misinformation
     let agg_checked=extra_data.state.agg
+
     useEffect(() => {
+     // eslint-disable-next-line
         fetchdocs();
-        // sortArray(sortType);
     }, [params.searchValue]);
+
     const fetchdocs = () => {
         axios
             .get(`http://127.0.0.1:5000/search?query=${params.searchValue}&mis_check=${misinformation_checked}`)
             .then((response) => {
-                setloading(false);
                 console.log(response);
                 setdocs(response.data);
             })
@@ -46,7 +47,9 @@ const Search = () => {
                 console.log(err);
             });
     };
+
     useEffect(()=>{
+     // eslint-disable-next-line
          sortArray(sortType)
     },[sortType,sliderValue])
 

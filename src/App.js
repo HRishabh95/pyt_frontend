@@ -1,8 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import {Component} from "react";
 import React from "react";
-import {Button} from "react-native";
-import {Collapse} from "react-collapse/lib/Collapse";
 import './App.css';
 
 
