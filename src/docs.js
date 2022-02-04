@@ -2,12 +2,14 @@ import {useLocation} from "react-router-dom";
 import ReactHtmlParser from 'react-html-parser';
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import downloadjs from "downloadjs";
+import "./sidebar.css"
 
 export default function Docs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     let data = useLocation();
     const docid= data.state.docid;
+    let [sentrelevance,setsentrelevance]=useState([]);
+    const [sidebarOpen, setSideBarOpen] = useState(false);
     let [relevance, setrelevance] = useState(true);
     const seachq=data.state.term;
     var str_array=seachq.split(' ');
@@ -20,16 +22,28 @@ export default function Docs() {
     // const content = data.state.text.replaceAll(seachq,`<span style="color: red">${seachq} </span> ` );
     // console.log(content)
     const handleMouseUp=()=> {
-        alert(`Selected text: ${window.getSelection().toString()}`);
+        let sent=window.getSelection().toString();
+        axios
+            .post('http://127.0.0.1:5000/updateRelSent',{'docid':data.state.docid,'sent':sent,'query':seachq})
+            .then((response)=>{
+                console.log(response);
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
+        get_sent_rel();
     }
 
+
+    // eslint-disable-next-line
      useEffect(()=> {
            get_rel();
+           get_sent_rel();
      },[docid]);
 
     const get_rel = () =>{
         axios
-        .get(`http://127.0.0.1:5000/getRel?docid=${data.state.docid}&query=${seachq}`)
+        .get(`http://127.0.0.1:5000/getRel?docid=${docid}&query=${seachq}`)
             .then((response) => {
                 console.log(response);
                 setrelevance(response.data)
@@ -39,9 +53,24 @@ export default function Docs() {
             });
     }
 
+    const get_sent_rel=()=>{
+        axios
+        .get(`http://127.0.0.1:5000/getRelSent?docid=${docid}&query=${seachq}`)
+            .then((response) => {
+                console.log(response);
+                setsentrelevance(response.data)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+    }
+
     useEffect(()=>{
         post_rel()
     },[relevance]);
+
+     // eslint-disable-next-line
     const post_rel = () => {
         axios.post('http://127.0.0.1:5000/updateRel',{'docid':data.state.docid,'rel':relevance,'query':seachq})
             .then((response)=>{
@@ -64,10 +93,25 @@ export default function Docs() {
             })
     }
 
+
     return (
         <div style={{ padding: "1rem" }}>
             <button onClick={getAnnoData}>Download Annotation</button>
-      <h2>Topical Score: {data.state.score}</h2>
+
+       <div className={["App", sidebarOpen ? "active" : ""].join(" ")}>
+      {sidebarOpen ? <div className="nav">
+          {sentrelevance
+              .map((doc) => (
+                  <p>{doc.sent}</p>
+                  )
+              )};
+      </div> : null}
+
+           <button onClick={()=>setSideBarOpen(!sidebarOpen)}>Relevant Sentences</button>
+
+
+
+            <h2>Topical Score: {data.state.score}</h2>
             {relevance? (
         <button style={{right: '10px'}} onClick={(e)=> setrelevance(!relevance)} className='Relevant'>
              Relevant
@@ -82,6 +126,7 @@ export default function Docs() {
         {ReactHtmlParser (content)}
       </p>
       </div>
+        </div>
     );
 }
 
