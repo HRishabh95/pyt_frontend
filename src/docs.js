@@ -8,7 +8,7 @@ export default function Docs() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     let data = useLocation();
     const docid= data.state.docid;
-    let [sentrelevance,setsentrelevance]=useState([]);
+    let [sentrelevance,setsentrelevance]=useState();
     const [sidebarOpen, setSideBarOpen] = useState(false);
     let [relevance, setrelevance] = useState(true);
     const seachq=data.state.term;
@@ -88,10 +88,23 @@ export default function Docs() {
                 let blob = new Blob([JSON.stringify(r.data)],{type: 'application/json'})
                 let link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
-                link.download='anno_all.json'
+                link.download='docs_annotations_all.json'
                 link.click()
             })
     }
+
+    const getSentAnnoData = () => {
+        axios
+            .get('http://127.0.0.1:5000/getSentAnno')
+            .then(function(r){
+                let blob = new Blob([JSON.stringify(r.data)],{type: 'application/json'})
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download='sent_annotations_all.json'
+                link.click()
+            })
+    }
+
 
 
     return (
@@ -100,6 +113,7 @@ export default function Docs() {
 
        <div className={["App", sidebarOpen ? "active" : ""].join(" ")}>
       {sidebarOpen ? <div className="nav">
+          <button onClick={getSentAnnoData}>Download Sent Anno</button>
           {sentrelevance
               .map((doc) => (
                   <p>{doc.sent}</p>
